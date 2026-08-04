@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
     protected function configurePassport(): void
     {
         Passport::authorizationView(
-            fn ($parameters) => Inertia::render('auth/OAuth/Authorize', [
+            fn (array $parameters) => Inertia::render('auth/OAuth/Authorize', [
                 'request' => $parameters['request'],
                 'authToken' => $parameters['authToken'],
                 'client' => $parameters['client'],

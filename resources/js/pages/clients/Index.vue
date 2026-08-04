@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import { Head, useForm, router } from '@inertiajs/vue3';
-import { Plus, Trash2, Pencil, Copy, Eye, EyeOff, ShieldCheck, ExternalLink } from '@lucide/vue';
+import {
+    Plus,
+    Trash2,
+    Pencil,
+    Copy,
+    Eye,
+    EyeOff,
+    ShieldCheck,
+    ExternalLink,
+} from '@lucide/vue';
 import { ref } from 'vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
@@ -57,8 +66,8 @@ const openEdit = (client: OAuthClient) => {
 
 const submitEdit = () => {
     if (!editingClient.value) {
-return;
-}
+        return;
+    }
 
     editForm.put(clientRoutes.update({ client: editingClient.value.id }).url, {
         onSuccess: () => {
@@ -70,7 +79,11 @@ return;
 
 // --- Delete / Revoke ---
 const revokeClient = (id: string) => {
-    if (confirm('Are you sure? This will revoke all active tokens for this application.')) {
+    if (
+        confirm(
+            'Are you sure? This will revoke all active tokens for this application.',
+        )
+    ) {
         router.delete(clientRoutes.destroy({ client: id }).url);
     }
 };
@@ -127,12 +140,17 @@ defineOptions({
             v-if="clients.length === 0"
             class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-sidebar-border/70 py-16 text-center"
         >
-            <div class="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <div
+                class="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary"
+            >
                 <ShieldCheck class="h-7 w-7" />
             </div>
-            <h3 class="text-base font-semibold text-foreground">No OAuth Applications</h3>
+            <h3 class="text-base font-semibold text-foreground">
+                No OAuth Applications
+            </h3>
             <p class="mt-1 max-w-sm text-sm text-muted-foreground">
-                Register your first tenant application to allow it to authenticate users via this Central SSO.
+                Register your first tenant application to allow it to
+                authenticate users via this Central SSO.
             </p>
             <Button class="mt-4 gap-2" @click="showCreateModal = true">
                 <Plus class="h-4 w-4" />
@@ -141,7 +159,10 @@ defineOptions({
         </div>
 
         <!-- Clients List -->
-        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div
+            v-else
+            class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
+        >
             <div
                 v-for="client in clients"
                 :key="client.id"
@@ -149,11 +170,15 @@ defineOptions({
             >
                 <div class="flex items-start justify-between gap-4">
                     <div class="flex items-center gap-3">
-                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                        <div
+                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"
+                        >
                             <ShieldCheck class="h-5 w-5" />
                         </div>
                         <div>
-                            <h3 class="font-semibold text-foreground">{{ client.name }}</h3>
+                            <h3 class="font-semibold text-foreground">
+                                {{ client.name }}
+                            </h3>
                             <a
                                 :href="client.redirect"
                                 target="_blank"
@@ -167,7 +192,12 @@ defineOptions({
 
                     <!-- Action Buttons -->
                     <div class="flex shrink-0 items-center gap-2">
-                        <Button variant="outline" size="sm" class="gap-1.5 text-xs" @click="openEdit(client)">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            class="gap-1.5 text-xs"
+                            @click="openEdit(client)"
+                        >
                             <Pencil class="h-3.5 w-3.5" />
                             Edit
                         </Button>
@@ -184,30 +214,64 @@ defineOptions({
                 </div>
 
                 <!-- Client ID & Secret -->
-                <div class="mt-4 grid gap-2 rounded-xl border border-sidebar-border/50 bg-accent/30 p-4">
+                <div
+                    class="mt-4 grid gap-2 rounded-xl border border-sidebar-border/50 bg-accent/30 p-4"
+                >
                     <!-- Client ID -->
                     <div class="flex items-center justify-between gap-2">
                         <div>
-                            <p class="text-xs text-muted-foreground">Client ID</p>
-                            <p class="mt-0.5 font-mono text-xs text-foreground">{{ client.id }}</p>
+                            <p class="text-xs text-muted-foreground">
+                                Client ID
+                            </p>
+                            <p class="mt-0.5 font-mono text-xs text-foreground">
+                                {{ client.id }}
+                            </p>
                         </div>
                         <Button
                             variant="ghost"
                             size="icon"
                             class="h-7 w-7 shrink-0"
-                            @click="copyToClipboard(client.id, 'id-' + client.id)"
-                            :title="copiedId === 'id-' + client.id ? 'Copied!' : 'Copy Client ID'"
+                            @click="
+                                copyToClipboard(client.id, 'id-' + client.id)
+                            "
+                            :title="
+                                copiedId === 'id-' + client.id
+                                    ? 'Copied!'
+                                    : 'Copy Client ID'
+                            "
                         >
-                            <Copy class="h-3.5 w-3.5" :class="copiedId === 'id-' + client.id ? 'text-emerald-500' : ''" />
+                            <Copy
+                                class="h-3.5 w-3.5"
+                                :class="
+                                    copiedId === 'id-' + client.id
+                                        ? 'text-emerald-500'
+                                        : ''
+                                "
+                            />
                         </Button>
                     </div>
 
                     <!-- Client Secret -->
-                    <div class="flex items-center justify-between gap-2 border-t border-sidebar-border/40 pt-2">
+                    <div
+                        class="flex items-center justify-between gap-2 border-t border-sidebar-border/40 pt-2"
+                    >
                         <div class="min-w-0 flex-1">
-                            <p class="text-xs text-muted-foreground">Client Secret</p>
-                            <p class="mt-0.5 truncate font-mono text-xs text-foreground">
-                                {{ visibleSecrets.has(client.id) ? client.secret : '•'.repeat(Math.min(client.secret?.length ?? 32, 32)) }}
+                            <p class="text-xs text-muted-foreground">
+                                Client Secret
+                            </p>
+                            <p
+                                class="mt-0.5 truncate font-mono text-xs text-foreground"
+                            >
+                                {{
+                                    visibleSecrets.has(client.id)
+                                        ? client.secret
+                                        : '•'.repeat(
+                                              Math.min(
+                                                  client.secret?.length ?? 32,
+                                                  32,
+                                              ),
+                                          )
+                                }}
                             </p>
                         </div>
                         <div class="flex shrink-0 items-center gap-1">
@@ -216,19 +280,42 @@ defineOptions({
                                 size="icon"
                                 class="h-7 w-7"
                                 @click="toggleSecret(client.id)"
-                                :title="visibleSecrets.has(client.id) ? 'Hide Secret' : 'Reveal Secret'"
+                                :title="
+                                    visibleSecrets.has(client.id)
+                                        ? 'Hide Secret'
+                                        : 'Reveal Secret'
+                                "
                             >
-                                <EyeOff v-if="visibleSecrets.has(client.id)" class="h-3.5 w-3.5" />
+                                <EyeOff
+                                    v-if="visibleSecrets.has(client.id)"
+                                    class="h-3.5 w-3.5"
+                                />
                                 <Eye v-else class="h-3.5 w-3.5" />
                             </Button>
                             <Button
                                 variant="ghost"
                                 size="icon"
                                 class="h-7 w-7"
-                                @click="copyToClipboard(client.secret, 'secret-' + client.id)"
-                                :title="copiedId === 'secret-' + client.id ? 'Copied!' : 'Copy Secret'"
+                                @click="
+                                    copyToClipboard(
+                                        client.secret,
+                                        'secret-' + client.id,
+                                    )
+                                "
+                                :title="
+                                    copiedId === 'secret-' + client.id
+                                        ? 'Copied!'
+                                        : 'Copy Secret'
+                                "
                             >
-                                <Copy class="h-3.5 w-3.5" :class="copiedId === 'secret-' + client.id ? 'text-emerald-500' : ''" />
+                                <Copy
+                                    class="h-3.5 w-3.5"
+                                    :class="
+                                        copiedId === 'secret-' + client.id
+                                            ? 'text-emerald-500'
+                                            : ''
+                                    "
+                                />
                             </Button>
                         </div>
                     </div>
@@ -243,14 +330,20 @@ defineOptions({
             <DialogHeader>
                 <DialogTitle>Register OAuth Application</DialogTitle>
                 <DialogDescription>
-                    Add a new tenant application that will authenticate users via this Central SSO.
+                    Add a new tenant application that will authenticate users
+                    via this Central SSO.
                 </DialogDescription>
             </DialogHeader>
 
             <form @submit.prevent="submitCreate" class="space-y-4 py-2">
                 <div class="grid gap-2">
                     <Label for="create-name">Application Name</Label>
-                    <Input id="create-name" v-model="createForm.name" placeholder="e.g. Tenant App One" required />
+                    <Input
+                        id="create-name"
+                        v-model="createForm.name"
+                        placeholder="e.g. Tenant App One"
+                        required
+                    />
                     <InputError :message="createForm.errors.name" />
                 </div>
                 <div class="grid gap-2">
@@ -266,8 +359,17 @@ defineOptions({
                 </div>
 
                 <DialogFooter class="pt-2">
-                    <Button type="button" variant="outline" @click="showCreateModal = false">Cancel</Button>
-                    <Button type="submit" :disabled="createForm.processing" class="gap-2">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        @click="showCreateModal = false"
+                        >Cancel</Button
+                    >
+                    <Button
+                        type="submit"
+                        :disabled="createForm.processing"
+                        class="gap-2"
+                    >
                         <Plus class="h-4 w-4" />
                         Register Application
                     </Button>
@@ -281,13 +383,21 @@ defineOptions({
         <DialogContent class="sm:max-w-md">
             <DialogHeader>
                 <DialogTitle>Edit OAuth Application</DialogTitle>
-                <DialogDescription>Update the name or callback URL for this application.</DialogDescription>
+                <DialogDescription
+                    >Update the name or callback URL for this
+                    application.</DialogDescription
+                >
             </DialogHeader>
 
             <form @submit.prevent="submitEdit" class="space-y-4 py-2">
                 <div class="grid gap-2">
                     <Label for="edit-name">Application Name</Label>
-                    <Input id="edit-name" v-model="editForm.name" placeholder="Application name" required />
+                    <Input
+                        id="edit-name"
+                        v-model="editForm.name"
+                        placeholder="Application name"
+                        required
+                    />
                     <InputError :message="editForm.errors.name" />
                 </div>
                 <div class="grid gap-2">
@@ -303,8 +413,17 @@ defineOptions({
                 </div>
 
                 <DialogFooter class="pt-2">
-                    <Button type="button" variant="outline" @click="showEditModal = false">Cancel</Button>
-                    <Button type="submit" :disabled="editForm.processing" class="gap-2">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        @click="showEditModal = false"
+                        >Cancel</Button
+                    >
+                    <Button
+                        type="submit"
+                        :disabled="editForm.processing"
+                        class="gap-2"
+                    >
                         <Pencil class="h-4 w-4" />
                         Save Changes
                     </Button>

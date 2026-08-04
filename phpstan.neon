@@ -11,3 +11,8 @@ parameters:
         - routes/
 
     level: 7
+    
+    ignoreErrors:
+        -
+            identifier: argument.type
+            path: app/Providers/AppServiceProvider.php

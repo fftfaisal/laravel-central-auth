@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Inertia\Response;
 use Laravel\Passport\ClientRepository;
 
 class OAuthClientController extends Controller
@@ -14,7 +16,7 @@ class OAuthClientController extends Controller
     /**
      * List all OAuth applications.
      */
-    public function index()
+    public function index(): Response
     {
         $clients = DB::table('oauth_clients')
             ->where('revoked', false)
@@ -36,7 +38,7 @@ class OAuthClientController extends Controller
     /**
      * Create a new OAuth application.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -56,7 +58,7 @@ class OAuthClientController extends Controller
     /**
      * Update an existing OAuth application.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -77,7 +79,7 @@ class OAuthClientController extends Controller
     /**
      * Revoke/delete an OAuth application.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
         $client = $this->clients->find($id);
 
